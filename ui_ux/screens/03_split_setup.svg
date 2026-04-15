@@ -1,0 +1,29 @@
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+    <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#1B1B1F" flood-opacity="0.06"/>
+  </filter>
+  <linearGradient id="bgFade" x1="0" y1="0" x2="390" y2="844" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#FBFBFD"/>
+    <stop offset="1" stop-color="#F7F7FA"/>
+  </linearGradient>
+</defs>
+
+<rect x="0" y="0" width="390" height="844" rx="0" fill="url(#bgFade)"/>
+<rect x="16" y="24" width="44" height="44" rx="22" fill="#FFFFFF" stroke="#E7E7EF" stroke-width="1" filter="url(#shadow)"/>
+<path d="M 42 37 L 33 46 L 42 55" stroke="#2B2B33" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="74" y="54" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="800" fill="#17171A">Режим деления</text>
+<text x="16" y="104" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="400" fill="#6D6E76">Выберите подходящий способ распределения суммы</text>
+<rect x="16" y="132" width="358" height="88" rx="22" fill="#FFFFFF" stroke="#E7E7EF" stroke-width="1" filter="url(#shadow)"/>
+<text x="34" y="166" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#17171A">Поровну</text>
+<text x="34" y="190" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="400" fill="#6D6E76">Сумма делится на всех участников одинаково</text>
+<text x="344" y="178" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="800" fill="#17171A">→</text>
+<rect x="16" y="236" width="358" height="88" rx="22" fill="#FFFFFF" stroke="#E7E7EF" stroke-width="1" filter="url(#shadow)"/>
+<text x="34" y="270" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#17171A">По людям</text>
+<text x="34" y="294" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="400" fill="#6D6E76">Введите отдельную сумму для каждого участника</text>
+<text x="344" y="282" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="800" fill="#17171A">→</text>
+<rect x="16" y="340" width="358" height="88" rx="22" fill="#FFFFFF" stroke="#E7E7EF" stroke-width="1" filter="url(#shadow)"/>
+<text x="34" y="374" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#17171A">По позициям</text>
+<text x="34" y="398" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="400" fill="#6D6E76">Выберите участника и добавляйте его блюда/позиции</text>
+<text x="344" y="386" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="800" fill="#17171A">→</text>
+</svg>
