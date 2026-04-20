@@ -24,4 +24,3 @@ class CheckItem(Base):
     price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
 
     company: Mapped["Company"] = relationship(back_populates="check_items")
-
