@@ -27,9 +27,14 @@ class BaseRepository(Generic[ModelT]):
             raise
 
     async def _save(self, instance: ModelT) -> ModelT:
-        self.session.add(instance)
-        await self.session.flush()
-        await self._commit()
+        try:
+            self.session.add(instance)
+            await self.session.flush()
+            await self.session.commit()
+        except SQLAlchemyError:
+            await self.session.rollback()
+            raise
+
         await self.session.refresh(instance)
         return instance
 
@@ -39,9 +44,13 @@ class BaseRepository(Generic[ModelT]):
         return result.scalar_one_or_none()
 
     async def delete_by_id(self, entity_id: int) -> bool:
-        stmt = delete(self.model).where(self.model.id == entity_id).returning(self.model.id)
-        result = await self.session.execute(stmt)
-        deleted_id = result.scalar_one_or_none()
-        await self._commit()
-        return deleted_id is not None
+        try:
+            stmt = delete(self.model).where(self.model.id == entity_id).returning(self.model.id)
+            result = await self.session.execute(stmt)
+            deleted_id = result.scalar_one_or_none()
+            await self.session.commit()
+        except SQLAlchemyError:
+            await self.session.rollback()
+            raise
 
+        return deleted_id is not None
