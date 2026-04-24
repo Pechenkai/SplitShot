@@ -59,6 +59,11 @@ Figma: [просмотр дизайна онлайн](https://www.figma.com/desi
 
 Визуальный вариант темной темы.
 
+### 11. Fortune wheel
+![Fortune wheel](./ui_ux/screens/11_fortune_wheel_screen.svg)
+
+Случайный выбор кто будет оплачивать.
+
 ## Color palette
 
 | Token | Color | Purpose |

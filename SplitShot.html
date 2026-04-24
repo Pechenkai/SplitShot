@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="ru">
 <head>
@@ -23,11 +22,6 @@ body{
   background:#15161b; color:#eef0f4; min-height:100vh; display:grid; place-items:center; padding:24px;
 }
 .layout{display:flex; gap:28px; align-items:flex-start; justify-content:center; width:100%; max-width:1280px}
-.notes{width:340px; line-height:1.45}
-.notes h1{margin:0 0 10px; font-size:26px}
-.notes p{margin:0 0 10px; color:#cfd3dd}
-.chips{display:flex; flex-wrap:wrap; gap:8px}
-.chip{padding:10px 14px; border-radius:999px; background:#24262f; color:#fff; font-weight:700; font-size:14px}
 .phone-shell{background:#0d0f14; padding:14px; border-radius:36px; box-shadow:0 28px 80px rgba(0,0,0,.42)}
 .phone{width:390px; height:844px; position:relative; overflow:hidden; border-radius:28px; background:linear-gradient(180deg,#fbfbfd 0%,#f4f5f9 100%); border:1px solid #2a2d37}
 body.dark .phone{background:linear-gradient(180deg,#151821 0%,#10131a 100%)}
@@ -95,8 +89,8 @@ body.dark .amount-chip,body.dark .primary-btn{color:#17171a}
   max-width:120px; background:var(--soft); padding:10px 12px; border-radius:12px; border:1px solid var(--border);
 }
 .two-inputs{display:grid; grid-template-columns:1fr 110px 42px; gap:10px}
-.pill-row{display:flex; gap:10px; flex-wrap:wrap}
-.pill{padding:11px 15px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--text); font-weight:700; cursor:pointer}
+.pill-row,.fortune-pill-row{display:flex; gap:10px; flex-wrap:wrap}
+.pill,.fortune-pill{padding:11px 15px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--text); font-weight:700; cursor:pointer}
 .pill.active{background:var(--dark); border-color:var(--dark); color:var(--surface)}
 body.dark .pill.active{color:#17171a}
 .list-box{border-radius:22px; padding:14px}
@@ -112,6 +106,53 @@ body.dark .pill.active{color:#17171a}
 .toggle.on:after{left:27px}
 .hint{margin-top:-4px; font-size:12px; color:var(--muted)}
 .accent{color:var(--accent); font-weight:800}
+.accent-btn{margin-top:0; background:var(--accent); color:#fff}
+.fortune-entry{border-color:var(--accent); background:rgba(255,79,180,.06)}
+.wheel-wrap{display:flex; justify-content:center; align-items:center; min-height:330px; position:relative}
+.wheel-pointer{
+  position:absolute; top:6px; left:50%; transform:translateX(-50%);
+  width:0; height:0; border-left:14px solid transparent; border-right:14px solid transparent;
+  border-top:26px solid var(--dark); border-bottom:0; z-index:3;
+}
+.wheel{
+  width:290px; height:290px; border-radius:50%; position:relative;
+  border:10px solid var(--surface); box-shadow:var(--shadow);
+  transition:transform 4s cubic-bezier(.12,.8,.16,1);
+  background:conic-gradient(
+    #ff9dcf 0deg 72deg,
+    #7e7bff 72deg 144deg,
+    #6cd8bb 144deg 216deg,
+    #ffd970 216deg 288deg,
+    #b791ff 288deg 360deg
+  );
+}
+.wheel.dynamic{
+  background:var(--wheel-gradient, conic-gradient(#ff9dcf 0deg 360deg));
+}
+.wheel-center{
+  position:absolute; inset:50%; transform:translate(-50%,-50%);
+  width:72px; height:72px; border-radius:50%; background:var(--dark); color:var(--surface);
+  display:grid; place-items:center; font-weight:800; z-index:2;
+}
+body.dark .wheel-center{color:#17171a}
+.wheel-labels{position:absolute; inset:0}
+.wheel-label{
+  position:absolute;
+  min-width:72px;
+  max-width:96px;
+  text-align:center;
+  font-size:14px;
+  font-weight:800;
+  color:#17171a;
+  line-height:1.1;
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+body.dark .wheel-label{color:#17171a}
+
 </style>
 </head>
 <body>
@@ -133,11 +174,7 @@ body.dark .pill.active{color:#17171a}
           <input id="participantNameInput" class="text-input" data-placeholder="participantPlaceholder" placeholder="Имя участника">
           <button class="plus-btn" id="addParticipantBtn">+</button>
         </div>
-        <div class="participants-list" id="participantsList">
-          <div class="participant"><div class="participant-left"><div class="avatar">А</div><div><div class="participant-name">Аня</div><div class="participant-meta">Участник #1</div></div></div><button class="mini-btn">×</button></div>
-          <div class="participant"><div class="participant-left"><div class="avatar">М</div><div><div class="participant-name">Миша</div><div class="participant-meta">Участник #2</div></div></div><button class="mini-btn">×</button></div>
-          <div class="participant"><div class="participant-left"><div class="avatar">О</div><div><div class="participant-name">Оля</div><div class="participant-meta">Участник #3</div></div></div><button class="mini-btn">×</button></div>
-        </div>
+        <div class="participants-list" id="participantsList"></div>
         <button class="primary-btn" id="goToHomeBtn" data-i18n="continue">Продолжить</button>
       </section>
 
@@ -181,6 +218,7 @@ body.dark .pill.active{color:#17171a}
         <div class="row" data-go="equalSplit"><div><div class="row-title" data-i18n="equalSplit">Поровну</div><div class="row-sub" data-i18n="equalSplitSub">Сумма делится на всех участников одинаково</div></div><div class="tail">→</div></div>
         <div class="row" data-go="splitByPeople"><div><div class="row-title" data-i18n="byPeople">По людям</div><div class="row-sub" data-i18n="byPeopleSub">Введите отдельную сумму для каждого участника</div></div><div class="tail">→</div></div>
         <div class="row" data-go="splitByItems"><div><div class="row-title" data-i18n="byItems">По позициям</div><div class="row-sub" data-i18n="byItemsSub">Выберите участника и добавляйте его блюда/позиции</div></div><div class="tail">→</div></div>
+        <div class="row selected fortune-entry" data-go="fortuneWheel"><div><div class="row-title" data-i18n="fortuneWheel">Колесо фортуны</div><div class="row-sub" data-i18n="fortuneWheelSub">Случайным образом выберите, кто оплатит счет</div></div><div class="tail">→</div></div>
       </section>
 
       <section class="screen" id="equalSplit">
@@ -209,6 +247,29 @@ body.dark .pill.active{color:#17171a}
         <div class="summary"><div class="label" data-i18n="assignedByItems">Назначено по позициям</div><div class="value" id="itemsAssignedTotal">0 ₽</div><div class="hint" id="itemsRemainingHint">Остаток: 2 980 ₽</div></div>
         <div class="items-list" id="itemsList"></div>
         <button class="primary-btn" id="saveItemsSplitBtn" data-i18n="saveCalculation">Сохранить расчет</button>
+      </section>
+
+      <section class="screen" id="fortuneWheel">
+        <div class="head-row"><button class="back-btn" data-go="splitSetup">←</button><h2 data-i18n="fortuneWheel">Колесо фортуны</h2></div>
+        <div class="subtitle" style="margin-top:0" data-i18n="fortuneScreenSub">Рандомно выбирает, кто оплатит счет</div>
+        <div class="summary">
+          <div class="label" data-i18n="currentResult">Текущий результат</div>
+          <div class="value" id="fortuneWinnerValue">Аня</div>
+          <div class="hint" id="fortuneHint" data-i18n="fortuneHint">В колесо попадают все участники, добавленные на первом экране</div>
+        </div>
+        <div class="wheel-wrap">
+          <div class="wheel-pointer"></div>
+          <div class="wheel" id="fortuneWheelGraphic">
+            <div class="wheel-center">GO</div>
+            <div class="wheel-labels" id="fortuneWheelLabels"></div>
+          </div>
+        </div>
+        <div class="list-box">
+          <div class="list-title" data-i18n="participantsInWheel">Участники в колесе</div>
+          <div class="fortune-pill-row" id="fortuneParticipantsPills"></div>
+        </div>
+        <button class="primary-btn" id="spinWheelBtn" data-i18n="spinWheel">Крутить колесо</button>
+        <button class="primary-btn accent-btn" id="saveFortuneBtn" data-i18n="saveToHistory">Сохранить в историю</button>
       </section>
 
       <section class="screen" id="profile">
@@ -255,14 +316,14 @@ body.dark .pill.active{color:#17171a}
     byPeople: {},
     selectedParticipant: "Аня",
     items: {"Аня":[{name:"Паста",price:990}],"Миша":[{name:"Пицца",price:1290}],"Оля":[]},
-    history: [{type:"draft"}]
+    history: [{type:"draft"}],
+    fortuneWinner: "Аня",
+    fortuneAngle: 0,
+    fortuneSpinning: false
   };
 
   var locales = {
     "Русский": {
-      notesTitle: "SplitShot — working prototype",
-      notesText: "Исправленная версия: участники отображаются, добавляются, сумма меняется, язык меняется во всем приложении.",
-      chip1: "Участники", chip2: "Сумма счета", chip3: "Язык", chip4: "История",
       participantsTitle: "Добавьте<br>участников",
       participantsSubtitle: "Начните с команды, а потом переходите к делению счета",
       participantsNow: "Участников сейчас",
@@ -271,8 +332,6 @@ body.dark .pill.active{color:#17171a}
       homeTitle: "Как хотите<br>разделить счет?",
       homeSubtitle: "Сначала выберите режим, затем подтвердите расчет",
       billTotal: "Итого по счету",
-      editBill: "Изменить сумму счета",
-      editBillSub: "Новое значение применяется ко всем экранам",
       apply: "Применить",
       mainFlow: "main flow",
       splitBill: "Разделить счет",
@@ -295,6 +354,8 @@ body.dark .pill.active{color:#17171a}
       byPeopleSub: "Введите отдельную сумму для каждого участника",
       byItems: "По позициям",
       byItemsSub: "Выберите участника и добавляйте его блюда/позиции",
+      fortuneWheel: "Колесо фортуны",
+      fortuneWheelSub: "Случайным образом выберите, кто оплатит счет",
       equalSplitTitle: "Деление поровну",
       totalAmount: "Общая сумма",
       participantsCount: "Количество участников",
@@ -308,6 +369,12 @@ body.dark .pill.active{color:#17171a}
       itemNamePlaceholder: "Название позиции",
       pricePlaceholder: "₽",
       assignedByItems: "Назначено по позициям",
+      currentResult: "Текущий результат",
+      fortuneHint: "В колесо попадают все участники, добавленные на первом экране",
+      fortuneScreenSub: "Рандомно выбирает, кто оплатит счет",
+      participantsInWheel: "Участники в колесе",
+      spinWheel: "Крутить колесо",
+      saveToHistory: "Сохранить в историю",
       profileTitle: "Профиль",
       localProfile: "Локальный профиль приложения",
       theme: "Тема",
@@ -340,12 +407,11 @@ body.dark .pill.active{color:#17171a}
       historyItemsTitle: "Деление по позициям",
       historyItemsDetails: "{count} позиций · назначено {assigned}",
       historyFullTitle: "Оплата целиком",
-      historyFullDetails: "Один участник оплатил {amount}"
+      historyFullDetails: "Один участник оплатил {amount}",
+      historyFortuneTitle: "Колесо фортуны",
+      historyFortuneDetails: "Счет оплачивает {winner}"
     },
     "English": {
-      notesTitle: "SplitShot — working prototype",
-      notesText: "Fixed version: participants render correctly, can be added, total price changes, and language updates across the whole app.",
-      chip1: "Participants", chip2: "Bill total", chip3: "Language", chip4: "History",
       participantsTitle: "Add<br>participants",
       participantsSubtitle: "Start with the group, then continue to bill splitting",
       participantsNow: "Participants now",
@@ -354,8 +420,6 @@ body.dark .pill.active{color:#17171a}
       homeTitle: "How do you want<br>to split the bill?",
       homeSubtitle: "Choose a mode first, then confirm the calculation",
       billTotal: "Bill total",
-      editBill: "Edit bill amount",
-      editBillSub: "The new value is applied on all screens",
       apply: "Apply",
       mainFlow: "main flow",
       splitBill: "Split the bill",
@@ -378,6 +442,8 @@ body.dark .pill.active{color:#17171a}
       byPeopleSub: "Enter a separate amount for each participant",
       byItems: "By items",
       byItemsSub: "Choose a participant and add their items",
+      fortuneWheel: "Wheel of fortune",
+      fortuneWheelSub: "Randomly choose who pays the bill",
       equalSplitTitle: "Equal split",
       totalAmount: "Total amount",
       participantsCount: "Participants count",
@@ -391,6 +457,12 @@ body.dark .pill.active{color:#17171a}
       itemNamePlaceholder: "Item name",
       pricePlaceholder: "$",
       assignedByItems: "Assigned by items",
+      currentResult: "Current result",
+      fortuneHint: "All participants added on the first screen are included in the wheel",
+      fortuneScreenSub: "Randomly chooses who pays the bill",
+      participantsInWheel: "Participants in wheel",
+      spinWheel: "Spin the wheel",
+      saveToHistory: "Save to history",
       profileTitle: "Profile",
       localProfile: "Local app profile",
       theme: "Theme",
@@ -423,12 +495,11 @@ body.dark .pill.active{color:#17171a}
       historyItemsTitle: "Split by items",
       historyItemsDetails: "{count} items · assigned {assigned}",
       historyFullTitle: "Full payment",
-      historyFullDetails: "One participant paid {amount}"
+      historyFullDetails: "One participant paid {amount}",
+      historyFortuneTitle: "Wheel of fortune",
+      historyFortuneDetails: "{winner} pays the bill"
     },
     "Deutsch": {
-      notesTitle: "SplitShot — funktionierender Prototyp",
-      notesText: "Korrigierte Version: Teilnehmer werden angezeigt, können hinzugefügt werden, der Gesamtbetrag ändert sich und die Sprache aktualisiert die ganze App.",
-      chip1: "Teilnehmer", chip2: "Rechnungsbetrag", chip3: "Sprache", chip4: "Verlauf",
       participantsTitle: "Teilnehmer<br>hinzufügen",
       participantsSubtitle: "Starte mit der Gruppe und gehe dann zur Aufteilung der Rechnung",
       participantsNow: "Teilnehmer aktuell",
@@ -437,8 +508,6 @@ body.dark .pill.active{color:#17171a}
       homeTitle: "Wie möchtet ihr<br>die Rechnung teilen?",
       homeSubtitle: "Wähle zuerst einen Modus und bestätige dann die Berechnung",
       billTotal: "Rechnung gesamt",
-      editBill: "Rechnungsbetrag ändern",
-      editBillSub: "Der neue Wert gilt auf allen Screens",
       apply: "Anwenden",
       mainFlow: "main flow",
       splitBill: "Rechnung teilen",
@@ -461,6 +530,8 @@ body.dark .pill.active{color:#17171a}
       byPeopleSub: "Gib für jede Person einen eigenen Betrag ein",
       byItems: "Nach Positionen",
       byItemsSub: "Wähle eine Person und füge ihre Positionen hinzu",
+      fortuneWheel: "Glücksrad",
+      fortuneWheelSub: "Wähle zufällig aus, wer die Rechnung bezahlt",
       equalSplitTitle: "Gleichmäßige Teilung",
       totalAmount: "Gesamtbetrag",
       participantsCount: "Anzahl Teilnehmer",
@@ -474,6 +545,12 @@ body.dark .pill.active{color:#17171a}
       itemNamePlaceholder: "Name der Position",
       pricePlaceholder: "€",
       assignedByItems: "Nach Positionen zugewiesen",
+      currentResult: "Aktuelles Ergebnis",
+      fortuneHint: "Alle Teilnehmer vom ersten Screen werden in das Rad aufgenommen",
+      fortuneScreenSub: "Wählt zufällig aus, wer die Rechnung bezahlt",
+      participantsInWheel: "Teilnehmer im Rad",
+      spinWheel: "Rad drehen",
+      saveToHistory: "Im Verlauf speichern",
       profileTitle: "Profil",
       localProfile: "Lokales App-Profil",
       theme: "Thema",
@@ -506,11 +583,14 @@ body.dark .pill.active{color:#17171a}
       historyItemsTitle: "Nach Positionen teilen",
       historyItemsDetails: "{count} Positionen · {assigned} zugewiesen",
       historyFullTitle: "Komplettzahlung",
-      historyFullDetails: "Eine Person zahlte {amount}"
+      historyFullDetails: "Eine Person zahlte {amount}",
+      historyFortuneTitle: "Glücksrad",
+      historyFortuneDetails: "{winner} bezahlt die Rechnung"
     }
   };
 
   var screens = document.querySelectorAll(".screen");
+  var wheelColors = ["#ff9dcf", "#7e7bff", "#6cd8bb", "#ffd970", "#b791ff", "#66c8ff", "#ffb36b", "#9fe870"];
 
   function tr(key, params) {
     var dict = locales[state.language] || locales["Русский"];
@@ -544,13 +624,23 @@ body.dark .pill.active{color:#17171a}
   }
 
   function ensureState() {
-    var each = +(state.total / Math.max(state.participants.length, 1)).toFixed(2);
+    var count = Math.max(state.participants.length, 1);
+    var each = +(state.total / count).toFixed(2);
     state.participants.forEach(function (name) {
       if (state.byPeople[name] === undefined) state.byPeople[name] = each;
       if (!state.items[name]) state.items[name] = [];
     });
+    Object.keys(state.byPeople).forEach(function(name) {
+      if (state.participants.indexOf(name) === -1) delete state.byPeople[name];
+    });
+    Object.keys(state.items).forEach(function(name) {
+      if (state.participants.indexOf(name) === -1) delete state.items[name];
+    });
     if (state.participants.indexOf(state.selectedParticipant) === -1) {
       state.selectedParticipant = state.participants[0] || "";
+    }
+    if (state.participants.indexOf(state.fortuneWinner) === -1) {
+      state.fortuneWinner = state.participants[0] || "";
     }
   }
 
@@ -566,6 +656,9 @@ body.dark .pill.active{color:#17171a}
     }
     if (entry.type === "full") {
       return {title: tr("historyFullTitle"), details: tr("historyFullDetails", {amount: formatCurrency(entry.amount)})};
+    }
+    if (entry.type === "fortune") {
+      return {title: tr("historyFortuneTitle"), details: tr("historyFortuneDetails", {winner: entry.winner})};
     }
     return {title: tr("historyDraftTitle"), details: tr("historyDraftDetails")};
   }
@@ -589,6 +682,7 @@ body.dark .pill.active{color:#17171a}
     var next = document.getElementById(id);
     next.style.display = "flex";
     next.classList.add("active");
+    if (id === "fortuneWheel") renderFortuneWheel();
   }
 
   function renderParticipants() {
@@ -697,6 +791,54 @@ body.dark .pill.active{color:#17171a}
     hint.style.color = Math.abs(remaining) < 0.01 ? "var(--success)" : "var(--warning)";
   }
 
+  function renderFortuneWheel() {
+    ensureState();
+    var wheel = document.getElementById("fortuneWheelGraphic");
+    var labels = document.getElementById("fortuneWheelLabels");
+    var pills = document.getElementById("fortuneParticipantsPills");
+    var winner = document.getElementById("fortuneWinnerValue");
+    winner.textContent = state.fortuneWinner || (state.participants[0] || "");
+
+    var count = Math.max(state.participants.length, 1);
+    var step = 360 / count;
+    var gradientParts = [];
+    labels.innerHTML = "";
+    pills.innerHTML = "";
+
+    state.participants.forEach(function(name, index) {
+      var color = wheelColors[index % wheelColors.length];
+      gradientParts.push(color + " " + (index * step) + "deg " + ((index + 1) * step) + "deg");
+
+      var label = document.createElement("div");
+      label.className = "wheel-label";
+
+      var angleDeg = index * step + step / 2 - 90;
+      var angleRad = angleDeg * Math.PI / 180;
+
+      var wheelSize = wheel.offsetWidth || 292;
+      var center = wheelSize / 2;
+      var textRadius = wheelSize * 0.31;
+
+      var x = center + Math.cos(angleRad) * textRadius;
+      var y = center + Math.sin(angleRad) * textRadius;
+
+      label.style.left = x + "px";
+      label.style.top = y + "px";
+      label.textContent = name;
+
+      labels.appendChild(label);
+
+      var pill = document.createElement("span");
+      pill.className = "fortune-pill";
+      pill.textContent = name;
+      pills.appendChild(pill);
+    });
+
+    wheel.classList.add("dynamic");
+    wheel.style.setProperty("--wheel-gradient", "conic-gradient(" + gradientParts.join(",") + ")");
+    wheel.style.transform = "rotate(" + state.fortuneAngle + "deg)";
+  }
+
   function renderProfile() {
     document.getElementById("themeTail").textContent = state.theme === "dark" ? tr("dark") : tr("light");
   }
@@ -740,9 +882,30 @@ body.dark .pill.active{color:#17171a}
     renderEqual();
     renderPeople();
     renderItems();
+    renderFortuneWheel();
     renderProfile();
     renderHistory();
     renderSettings();
+  }
+
+  function spinWheel() {
+    if (!state.participants.length || state.fortuneSpinning) return;
+    state.fortuneSpinning = true;
+    var winnerIndex = Math.floor(Math.random() * state.participants.length);
+    var count = state.participants.length;
+    var step = 360 / count;
+    var centerAngle = winnerIndex * step + step / 2;
+    var finalAngle = 360 - centerAngle;
+    var extraSpins = 360 * (4 + Math.floor(Math.random() * 3));
+    state.fortuneAngle = state.fortuneAngle + extraSpins + finalAngle;
+    state.fortuneWinner = state.participants[winnerIndex];
+
+    var wheel = document.getElementById("fortuneWheelGraphic");
+    wheel.style.transform = "rotate(" + state.fortuneAngle + "deg)";
+    setTimeout(function() {
+      state.fortuneSpinning = false;
+      document.getElementById("fortuneWinnerValue").textContent = state.fortuneWinner;
+    }, 4000);
   }
 
   document.addEventListener("click", function (e) {
@@ -777,6 +940,7 @@ body.dark .pill.active{color:#17171a}
     state.byPeople[value] = +(state.total / Math.max(state.participants.length, 1)).toFixed(2);
     state.items[value] = [];
     state.selectedParticipant = value;
+    state.fortuneWinner = value;
     input.value = "";
     renderAll();
   });
@@ -855,6 +1019,15 @@ body.dark .pill.active{color:#17171a}
       });
     });
     state.history.unshift({type: "items", amount: state.total, assigned: assigned, count: count, date: new Date().toLocaleString(localeCode())});
+    renderHistory();
+    showScreen("historyScreen");
+  });
+
+  document.getElementById("spinWheelBtn").addEventListener("click", spinWheel);
+
+  document.getElementById("saveFortuneBtn").addEventListener("click", function () {
+    if (!state.fortuneWinner) return;
+    state.history.unshift({type: "fortune", amount: state.total, winner: state.fortuneWinner, date: new Date().toLocaleString(localeCode())});
     renderHistory();
     showScreen("historyScreen");
   });

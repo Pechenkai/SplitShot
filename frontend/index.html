@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="ru">
 <head>
@@ -26,11 +25,7 @@
           <input id="participantNameInput" class="text-input" data-placeholder="participantPlaceholder" placeholder="Имя участника">
           <button class="plus-btn" id="addParticipantBtn">+</button>
         </div>
-        <div class="participants-list" id="participantsList">
-          <div class="participant"><div class="participant-left"><div class="avatar">А</div><div><div class="participant-name">Аня</div><div class="participant-meta">Участник #1</div></div></div><button class="mini-btn">×</button></div>
-          <div class="participant"><div class="participant-left"><div class="avatar">М</div><div><div class="participant-name">Миша</div><div class="participant-meta">Участник #2</div></div></div><button class="mini-btn">×</button></div>
-          <div class="participant"><div class="participant-left"><div class="avatar">О</div><div><div class="participant-name">Оля</div><div class="participant-meta">Участник #3</div></div></div><button class="mini-btn">×</button></div>
-        </div>
+        <div class="participants-list" id="participantsList"></div>
         <button class="primary-btn" id="goToHomeBtn" data-i18n="continue">Продолжить</button>
       </section>
 
@@ -74,6 +69,7 @@
         <div class="row" data-go="equalSplit"><div><div class="row-title" data-i18n="equalSplit">Поровну</div><div class="row-sub" data-i18n="equalSplitSub">Сумма делится на всех участников одинаково</div></div><div class="tail">→</div></div>
         <div class="row" data-go="splitByPeople"><div><div class="row-title" data-i18n="byPeople">По людям</div><div class="row-sub" data-i18n="byPeopleSub">Введите отдельную сумму для каждого участника</div></div><div class="tail">→</div></div>
         <div class="row" data-go="splitByItems"><div><div class="row-title" data-i18n="byItems">По позициям</div><div class="row-sub" data-i18n="byItemsSub">Выберите участника и добавляйте его блюда/позиции</div></div><div class="tail">→</div></div>
+        <div class="row selected fortune-entry" data-go="fortuneWheel"><div><div class="row-title" data-i18n="fortuneWheel">Колесо фортуны</div><div class="row-sub" data-i18n="fortuneWheelSub">Случайным образом выберите, кто оплатит счет</div></div><div class="tail">→</div></div>
       </section>
 
       <section class="screen" id="equalSplit">
@@ -102,6 +98,29 @@
         <div class="summary"><div class="label" data-i18n="assignedByItems">Назначено по позициям</div><div class="value" id="itemsAssignedTotal">0 ₽</div><div class="hint" id="itemsRemainingHint">Остаток: 2 980 ₽</div></div>
         <div class="items-list" id="itemsList"></div>
         <button class="primary-btn" id="saveItemsSplitBtn" data-i18n="saveCalculation">Сохранить расчет</button>
+      </section>
+
+      <section class="screen" id="fortuneWheel">
+        <div class="head-row"><button class="back-btn" data-go="splitSetup">←</button><h2 data-i18n="fortuneWheel">Колесо фортуны</h2></div>
+        <div class="subtitle" style="margin-top:0" data-i18n="fortuneScreenSub">Рандомно выбирает, кто оплатит счет</div>
+        <div class="summary">
+          <div class="label" data-i18n="currentResult">Текущий результат</div>
+          <div class="value" id="fortuneWinnerValue">Аня</div>
+          <div class="hint" id="fortuneHint" data-i18n="fortuneHint">В колесо попадают все участники, добавленные на первом экране</div>
+        </div>
+        <div class="wheel-wrap">
+          <div class="wheel-pointer"></div>
+          <div class="wheel" id="fortuneWheelGraphic">
+            <div class="wheel-center">GO</div>
+            <div class="wheel-labels" id="fortuneWheelLabels"></div>
+          </div>
+        </div>
+        <div class="list-box">
+          <div class="list-title" data-i18n="participantsInWheel">Участники в колесе</div>
+          <div class="fortune-pill-row" id="fortuneParticipantsPills"></div>
+        </div>
+        <button class="primary-btn" id="spinWheelBtn" data-i18n="spinWheel">Крутить колесо</button>
+        <button class="primary-btn accent-btn" id="saveFortuneBtn" data-i18n="saveToHistory">Сохранить в историю</button>
       </section>
 
       <section class="screen" id="profile">
