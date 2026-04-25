@@ -7,14 +7,27 @@ assignees: ''
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## 📌 Название
+<кратко, что делаем>
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+## 📖 Описание
+<что именно должно быть реализовано и зачем>
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## 📎 Ссылка на ТЗ
+<ссылка на раздел ТЗ / wiki>
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+## ✅ Acceptance Criteria
+- [ ] ...
+- [ ] ...
+- [ ] ...
+
+## ⚙️ Детали реализации
+<если есть: архитектура, API, ограничения>
+
+## 📊 Оценка
+Story points: X  
+или  
+Время: X часов
+
+## 🔥 Приоритет
+High / Medium / Low
