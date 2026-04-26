@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-from sqlalchemy import delete, select
+from sqlalchemy import select
 
 from app.db.models.check_item import CheckItem
 from app.repositories.base import BaseRepository
@@ -39,15 +39,10 @@ class CheckItemRepository(BaseRepository[CheckItem]):
         return item
 
     async def delete(self, item_id: int) -> bool:
-        return await self.delete_by_id(item_id)
+        item = await self.get_by_id(item_id)
+        if item is None:
+            return False
 
-    async def delete_by_company(self, company_id: int, item_id: int) -> bool:
-        stmt = (
-            delete(CheckItem)
-            .where(CheckItem.id == item_id, CheckItem.company_id == company_id)
-            .returning(CheckItem.id)
-        )
-        result = await self.session.execute(stmt)
-        deleted_id = result.scalar_one_or_none()
+        await self.session.delete(item)
         await self._commit()
-        return deleted_id is not None
+        return True

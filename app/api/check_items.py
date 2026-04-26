@@ -25,11 +25,8 @@ async def list_check_items(company_id: int, db: AsyncSession = Depends(get_db)):
     return await CheckItemRepository(db).list_by_company(company_id)
 
 
-@router.delete("/companies/{company_id}/check-items/{check_item_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_check_item(company_id: int, check_item_id: int, db: AsyncSession = Depends(get_db)) -> None:
-    if await CompanyRepository(db).get_by_id(company_id) is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Company not found")
-
-    deleted = await CheckItemRepository(db).delete_by_company(company_id, check_item_id)
+@router.delete("/check-items/{check_item_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_check_item(check_item_id: int, db: AsyncSession = Depends(get_db)) -> None:
+    deleted = await CheckItemRepository(db).delete(check_item_id)
     if not deleted:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Check item not found")
