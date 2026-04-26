@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from app.config import settings
 from app.db.base import Base
-from app.db.models import check_item, company, debt, game_result, game_session, participant  # noqa: F401
+from app.db.models import check_item, company, content, debt, game_result, game_session, participant  # noqa: F401
 
 config = context.config
 if not config.get_main_option("sqlalchemy.url"):
