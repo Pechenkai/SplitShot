@@ -9,6 +9,7 @@ class CompanyCreate(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
 
     title: str = Field(..., min_length=1)
+    invite_code: str | None = Field(default=None, min_length=1, max_length=16)
 
 
 class CompanyUpdate(BaseModel):
