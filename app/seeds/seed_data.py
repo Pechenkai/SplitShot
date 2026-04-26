@@ -6,7 +6,6 @@ from decimal import Decimal
 from app.db.session import AsyncSessionFactory
 from app.repositories.check_item import CheckItemRepository
 from app.repositories.company import CompanyRepository
-from app.repositories.content import ForfeitRepository, TongueTwisterRepository
 from app.repositories.debt import DebtRepository
 from app.repositories.game_result import GameResultRepository
 from app.repositories.game_session import GameSessionRepository
@@ -21,8 +20,6 @@ async def seed() -> None:
         participant_repo = ParticipantRepository(session)
         check_item_repo = CheckItemRepository(session)
         debt_repo = DebtRepository(session)
-        tongue_twister_repo = TongueTwisterRepository(session)
-        forfeit_repo = ForfeitRepository(session)
         game_session_repo = GameSessionRepository(session)
         game_result_repo = GameResultRepository(session)
 
@@ -48,15 +45,6 @@ async def seed() -> None:
         await debt_repo.create(friday_bar.id, charlie.id, diana.id, Decimal("4.80"))
         await debt_repo.create(rooftop_club.id, grace.id, eve.id, Decimal("7.10"))
 
-        await tongue_twister_repo.create("Шла Саша по шоссе и сосала сушку.")
-        await tongue_twister_repo.create("Карл у Клары украл кораллы, а Клара у Карла украла кларнет.")
-        await tongue_twister_repo.create("На дворе трава, на траве дрова.")
-
-        await forfeit_repo.create_builtin("Расскажи смешную историю за этот вечер.")
-        await forfeit_repo.create_builtin("Скажи тост за компанию.")
-        await forfeit_repo.create_builtin("Изобрази ведущего прогноза погоды.")
-        await forfeit_repo.create_custom(friday_bar.id, "Придумай новое название этой компании.")
-
         wheel_session = await game_session_repo.create(friday_bar.id, "wheel", "completed")
         sobriety_session = await game_session_repo.create(friday_bar.id, "sobriety_test", "active")
         tongue_twister_session = await game_session_repo.create(rooftop_club.id, "tongue_twister", "completed")
@@ -76,3 +64,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
