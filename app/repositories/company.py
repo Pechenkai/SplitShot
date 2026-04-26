@@ -4,6 +4,7 @@ import secrets
 import string
 
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 
 from app.db.models.company import Company
 from app.repositories.base import BaseRepository
@@ -13,6 +14,12 @@ class CompanyRepository(BaseRepository[Company]):
     model = Company
 
     async def create(self, title: str) -> Company:
+        for _ in range(5):
+            try:
+                return await self._save(Company(title=title, invite_code=await self._make_invite_code()))
+            except IntegrityError:
+                await self.session.rollback()
+
         return await self._save(Company(title=title, invite_code=await self._make_invite_code()))
 
     async def _make_invite_code(self) -> str:
