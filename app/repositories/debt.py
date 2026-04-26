@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from app.db.models.debt import Debt
 from app.repositories.base import BaseRepository
@@ -35,6 +35,13 @@ class DebtRepository(BaseRepository[Debt]):
         result = await self.session.execute(stmt)
         return list(result.scalars().all())
 
+    async def delete_by_company(self, company_id: int) -> int:
+        stmt = delete(Debt).where(Debt.company_id == company_id).returning(Debt.id)
+        result = await self.session.execute(stmt)
+        deleted_ids = list(result.scalars().all())
+        await self._commit()
+        return len(deleted_ids)
+
     async def delete(self, debt_id: int) -> bool:
         return await self.delete_by_id(debt_id)
-
+  
