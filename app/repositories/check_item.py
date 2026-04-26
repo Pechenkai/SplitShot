@@ -39,10 +39,5 @@ class CheckItemRepository(BaseRepository[CheckItem]):
         return item
 
     async def delete(self, item_id: int) -> bool:
-        item = await self.get_by_id(item_id)
-        if item is None:
-            return False
+        return await self.delete_by_id(item_id)
 
-        await self.session.delete(item)
-        await self._commit()
-        return True
