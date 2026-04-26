@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -20,15 +20,25 @@ async def random_tongue_twister(db: AsyncSession = Depends(get_db)):
 
 
 @router.get("/forfeits/random", response_model=ForfeitRead)
-async def random_forfeit(company_id: int | None = None, db: AsyncSession = Depends(get_db)):
+async def random_forfeit(
+    company_id: int | None = Query(default=None, description="Company id for custom forfeits"),
+    db: AsyncSession = Depends(get_db),
+):
     item = await ForfeitRepository(db).random(company_id)
     if item is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Forfeit not found")
     return item
 
 
+@router.get("/companies/{company_id}/forfeits", response_model=list[ForfeitRead])
+async def list_company_forfeits(company_id: int, db: AsyncSession = Depends(get_db)):
+    if await CompanyRepository(db).get_by_id(company_id) is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Company not found")
+    return await ForfeitRepository(db).list_by_company(company_id)
+
+
 @router.post("/companies/{company_id}/forfeits", response_model=ForfeitRead, status_code=status.HTTP_201_CREATED)
 async def create_company_forfeit(company_id: int, payload: ForfeitCreate, db: AsyncSession = Depends(get_db)):
     if await CompanyRepository(db).get_by_id(company_id) is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Company not found")
-    return await ForfeitRepository(db).create_custom(company_id, payload.text)
+    return await ForfeitRepository(db).create_custom(company_id, payload.text, payload.kind)
