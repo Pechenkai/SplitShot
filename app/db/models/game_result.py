@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from sqlalchemy import JSON, CheckConstraint, ForeignKey, Index, Integer, String
+from sqlalchemy import JSON, CheckConstraint, ForeignKey, Index, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
@@ -16,6 +16,7 @@ class GameResult(Base):
         CheckConstraint("char_length(trim(result_value)) > 0", name="game_result_value_not_blank"),
         Index("ix_game_result_game_session_id", "game_session_id"),
         Index("ix_game_result_participant_id", "participant_id"),
+        UniqueConstraint("game_session_id", "participant_id", name="uq_game_result_session_participant"),
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)

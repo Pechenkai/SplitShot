@@ -19,8 +19,8 @@ class GameRepository:
     async def get_session(self, session_id: int) -> GameSession | None:
         return await self.sessions.get_by_id(session_id)
 
-    async def list_sessions_by_company(self, company_id: int) -> list[GameSession]:
-        return await self.sessions.list_by_company(company_id)
+    async def list_sessions_by_company(self, company_id: int, limit: int = 100, offset: int = 0) -> list[GameSession]:
+        return await self.sessions.list_by_company(company_id, limit=limit, offset=offset)
 
     async def set_session_status(self, session_id: int, status: str) -> GameSession | None:
         return await self.sessions.update_status(session_id, status)
@@ -34,5 +34,5 @@ class GameRepository:
     ) -> GameResult:
         return await self.results.create(game_session_id, participant_id, result_value, result_data)
 
-    async def list_results(self, game_session_id: int) -> list[GameResult]:
-        return await self.results.list_by_game_session(game_session_id)
+    async def list_results(self, game_session_id: int, limit: int = 100, offset: int = 0) -> list[GameResult]:
+        return await self.results.list_by_game_session(game_session_id, limit=limit, offset=offset)
