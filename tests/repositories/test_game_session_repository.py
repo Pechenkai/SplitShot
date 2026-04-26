@@ -74,3 +74,43 @@ async def test_delete_game_session_cascades_to_results(db_session, seeded_compan
 
     result = await db_session.execute(select(GameResult))
     assert result.scalars().all() == []
+
+
+async def test_multiple_sessions_for_company(db_session, seeded_company) -> None:
+    repo = GameSessionRepository(db_session)
+    
+    session1 = await repo.create(seeded_company.id, "wheel", "planned")
+    session2 = await repo.create(seeded_company.id, "sobriety_test", "active")
+    session3 = await repo.create(seeded_company.id, "tongue_twister", "completed")
+    
+    sessions = await repo.list_by_company(seeded_company.id)
+    
+    assert len(sessions) == 3
+    assert [s.status for s in sessions] == ["planned", "active", "completed"]
+
+
+async def test_update_status_to_same_value(db_session, seeded_company) -> None:
+    repo = GameSessionRepository(db_session)
+    session = await repo.create(seeded_company.id, "wheel", "planned")
+    
+    updated = await repo.update_status(session.id, "planned")
+    
+    assert updated.status == "planned"
+
+
+@pytest.mark.parametrize("status", ["planned", "active", "completed", "cancelled"])
+async def test_update_status_valid_values(db_session, seeded_company, status: str) -> None:
+    repo = GameSessionRepository(db_session)
+    session = await repo.create(seeded_company.id, "wheel", "planned")
+    
+    updated = await repo.update_status(session.id, status)
+    
+    assert updated.status == status
+
+
+async def test_list_by_company_returns_empty_for_no_sessions(db_session, seeded_company) -> None:
+    repo = GameSessionRepository(db_session)
+    
+    sessions = await repo.list_by_company(seeded_company.id)
+    
+    assert sessions == []
