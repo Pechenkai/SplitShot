@@ -6,13 +6,4 @@ from app.db.models.game_result import GameResult
 from app.db.models.game_session import GameSession
 from app.db.models.participant import Participant
 
-__all__ = [
-    "CheckItem",
-    "Company",
-    "Debt",
-    "Forfeit",
-    "GameResult",
-    "GameSession",
-    "Participant",
-    "TongueTwister",
-]
+__all__ = ["CheckItem", "Company", "Debt", "Forfeit", "GameResult", "GameSession", "Participant", "TongueTwister"]

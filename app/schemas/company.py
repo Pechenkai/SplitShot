@@ -1,17 +1,26 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from datetime import datetime
 
-
-@dataclass(slots=True)
-class CompanyCreate:
-    title: str
+from pydantic import BaseModel, ConfigDict, Field
 
 
-@dataclass(slots=True)
-class CompanyRead:
+class CompanyCreate(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    title: str = Field(..., min_length=1)
+
+
+class CompanyUpdate(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    title: str = Field(..., min_length=1)
+
+
+class CompanyRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     title: str
+    invite_code: str
     created_at: datetime
-

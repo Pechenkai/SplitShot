@@ -18,6 +18,7 @@ class Company(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String(255), nullable=False)
+    invite_code: Mapped[str] = mapped_column(String(16), nullable=False, unique=True, index=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         nullable=False,
@@ -44,4 +45,3 @@ class Company(Base):
         cascade="all, delete-orphan",
         passive_deletes=True,
     )
-
