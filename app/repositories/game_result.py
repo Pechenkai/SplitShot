@@ -26,14 +26,8 @@ class GameResultRepository(BaseRepository[GameResult]):
         )
         return await self._save(game_result)
 
-    async def list_by_game_session(self, game_session_id: int, limit: int = 100, offset: int = 0) -> list[GameResult]:
-        stmt = (
-            select(GameResult)
-            .where(GameResult.game_session_id == game_session_id)
-            .order_by(GameResult.id)
-            .limit(limit)
-            .offset(offset)
-        )
+    async def list_by_game_session(self, game_session_id: int) -> list[GameResult]:
+        stmt = select(GameResult).where(GameResult.game_session_id == game_session_id).order_by(GameResult.id)
         result = await self.session.execute(stmt)
         return list(result.scalars().all())
 
