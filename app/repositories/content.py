@@ -26,11 +26,13 @@ class ForfeitRepository(BaseRepository[Forfeit]):
     async def create_builtin(self, text: str, kind: str = "built_in") -> Forfeit:
         return await self._save(Forfeit(company_id=None, text=text, kind=kind))
 
-    async def list_by_company(self, company_id: int) -> list[Forfeit]:
+    async def list_by_company(self, company_id: int, limit: int = 100, offset: int = 0) -> list[Forfeit]:
         stmt = (
             select(Forfeit)
             .where(or_(Forfeit.company_id.is_(None), Forfeit.company_id == company_id))
             .order_by(Forfeit.id)
+            .limit(limit)
+            .offset(offset)
         )
         result = await self.session.execute(stmt)
         return list(result.scalars().all())
@@ -39,7 +41,5 @@ class ForfeitRepository(BaseRepository[Forfeit]):
         stmt = select(Forfeit)
         if company_id is not None:
             stmt = stmt.where(or_(Forfeit.company_id.is_(None), Forfeit.company_id == company_id))
-        else:
-            stmt = stmt.where(Forfeit.company_id.is_(None))
         result = await self.session.execute(stmt.order_by(func.random()).limit(1))
         return result.scalar_one_or_none()

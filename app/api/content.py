@@ -31,10 +31,20 @@ async def random_forfeit(
 
 
 @router.get("/companies/{company_id}/forfeits", response_model=list[ForfeitRead])
-async def list_company_forfeits(company_id: int, db: AsyncSession = Depends(get_db)):
+async def list_company_forfeits(
+    company_id: int,
+    limit: int = Query(default=100, ge=1, le=500),
+    offset: int = Query(default=0, ge=0),
+    db: AsyncSession = Depends(get_db),
+):
     if await CompanyRepository(db).get_by_id(company_id) is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Company not found")
-    return await ForfeitRepository(db).list_by_company(company_id)
+    return await ForfeitRepository(db).list_by_company(company_id, limit=limit, offset=offset)
+
+
+@router.post("/forfeits", response_model=ForfeitRead, status_code=status.HTTP_201_CREATED)
+async def create_builtin_forfeit(payload: ForfeitCreate, db: AsyncSession = Depends(get_db)):
+    return await ForfeitRepository(db).create_builtin(payload.text, payload.kind)
 
 
 @router.post("/companies/{company_id}/forfeits", response_model=ForfeitRead, status_code=status.HTTP_201_CREATED)
