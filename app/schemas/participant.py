@@ -1,22 +1,23 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from pydantic import BaseModel, ConfigDict, Field
 
 
-@dataclass(slots=True)
-class ParticipantCreate:
-    company_id: int
-    name: str
+class ParticipantCreate(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    name: str = Field(..., min_length=1)
 
 
-@dataclass(slots=True)
-class ParticipantUpdate:
-    name: str
+class ParticipantUpdate(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    name: str = Field(..., min_length=1)
 
 
-@dataclass(slots=True)
-class ParticipantRead:
+class ParticipantRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     company_id: int
     name: str
-
