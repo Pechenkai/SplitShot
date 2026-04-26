@@ -1,0 +1,2 @@
+"""SplitShot application package."""
+
