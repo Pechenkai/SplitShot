@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SplitShot Prototype Fixed</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="layout">
+  <div class="phone-shell">
+    <div class="phone">
+      <section class="screen active" id="participants">
+        <div class="header">
+          <div class="brand" data-go="participants"><div class="brand-logo">S</div><span>eat & split</span></div>
+          <button class="icon-btn" data-go="profile">◌</button>
+        </div>
+        <div class="title" data-i18n="participantsTitle">Добавьте<br>участников</div>
+        <div class="subtitle" data-i18n="participantsSubtitle">Начните с команды, а потом переходите к делению счета</div>
+        <div class="summary">
+          <div class="label" data-i18n="participantsNow">Участников сейчас</div>
+          <div class="value" id="participantsCountValue">3</div>
+        </div>
+        <div class="input-wrap">
+          <input id="participantNameInput" class="text-input" data-placeholder="participantPlaceholder" placeholder="Имя участника">
+          <button class="plus-btn" id="addParticipantBtn">+</button>
+        </div>
+        <div class="participants-list" id="participantsList"></div>
+        <button class="primary-btn" id="goToHomeBtn" data-i18n="continue">Продолжить</button>
+      </section>
+
+      <section class="screen" id="home">
+        <div class="header">
+          <div class="brand" data-go="participants"><div class="brand-logo">S</div><span>eat & split</span></div>
+          <button class="icon-btn" data-go="profile">◌</button>
+        </div>
+        <div class="title" data-i18n="homeTitle">Как хотите<br>разделить счет?</div>
+        <div class="subtitle" data-i18n="homeSubtitle">Сначала выберите режим, затем подтвердите расчет</div>
+        <div class="summary">
+          <div class="label" data-i18n="billTotal">Итого по счету</div>
+          <div class="value" id="homeTotalValue">2 980 ₽</div>
+          <div class="summary-edit">
+            <input id="totalAmountInput" class="number-input" type="number" min="0" step="1" value="2980" aria-label="Total amount">
+            <button class="mini-save" id="saveTotalBtn" data-i18n="apply">Применить</button>
+          </div>
+        </div>
+        <div class="card selected" data-go="splitSetup">
+          <div class="top-row"><div class="soft-icon">◌◌</div><div class="badge" data-i18n="mainFlow">main flow</div></div>
+          <div><div class="card-title" data-i18n="splitBill">Разделить счет</div><div class="card-sub" data-i18n="splitBillSub">Поровну, по людям или по позициям</div></div>
+        </div>
+        <div class="card" data-go="fullPayment">
+          <div class="top-row"><div class="soft-icon">◌</div><div class="amount-chip" id="homeAmountChip">2 980 ₽</div></div>
+          <div><div class="card-title" data-i18n="payFull">Оплатить счет целиком</div><div class="card-sub" data-i18n="payFullSub">Один участник берет на себя весь счет</div></div>
+        </div>
+        <button class="primary-btn" data-go="splitSetup" data-i18n="continue">Продолжить</button>
+      </section>
+
+      <section class="screen" id="fullPayment">
+        <div class="head-row"><button class="back-btn" data-go="home">←</button><h2 data-i18n="fullPaymentTitle">Оплата целиком</h2></div>
+        <div class="summary"><div class="label" data-i18n="toPay">К оплате</div><div class="value" id="fullPaymentValue">2 980 ₽</div></div>
+        <div class="row"><div><div class="row-title" data-i18n="payer">Плательщик</div><div class="row-sub" data-i18n="payerSub">Один участник оплачивает всю сумму</div></div><div class="tail" data-i18n="onePerson">1 чел.</div></div>
+        <div class="row"><div><div class="row-title" data-i18n="participantsInGroup">Участников в компании</div><div class="row-sub" data-i18n="participantsInGroupSub">Для истории и дальнейших сценариев</div></div><div class="tail" id="fullParticipantsTail">3</div></div>
+        <button class="primary-btn" id="confirmFullPaymentBtn" data-i18n="confirm">Подтвердить</button>
+      </section>
+
+      <section class="screen" id="splitSetup">
+        <div class="head-row"><button class="back-btn" data-go="home">←</button><h2 data-i18n="splitModeTitle">Режим деления</h2></div>
+        <div class="subtitle" style="margin-top:0" data-i18n="splitModeSubtitle">Выберите подходящий способ распределения суммы</div>
+        <div class="row" data-go="equalSplit"><div><div class="row-title" data-i18n="equalSplit">Поровну</div><div class="row-sub" data-i18n="equalSplitSub">Сумма делится на всех участников одинаково</div></div><div class="tail">→</div></div>
+        <div class="row" data-go="splitByPeople"><div><div class="row-title" data-i18n="byPeople">По людям</div><div class="row-sub" data-i18n="byPeopleSub">Введите отдельную сумму для каждого участника</div></div><div class="tail">→</div></div>
+        <div class="row" data-go="splitByItems"><div><div class="row-title" data-i18n="byItems">По позициям</div><div class="row-sub" data-i18n="byItemsSub">Выберите участника и добавляйте его блюда/позиции</div></div><div class="tail">→</div></div>
+        <div class="row selected fortune-entry" data-go="fortuneWheel"><div><div class="row-title" data-i18n="fortuneWheel">Колесо фортуны</div><div class="row-sub" data-i18n="fortuneWheelSub">Случайным образом выберите, кто оплатит счет</div></div><div class="tail">→</div></div>
+      </section>
+
+      <section class="screen" id="equalSplit">
+        <div class="head-row"><button class="back-btn" data-go="splitSetup">←</button><h2 data-i18n="equalSplitTitle">Деление поровну</h2></div>
+        <div class="summary"><div class="label" data-i18n="totalAmount">Общая сумма</div><div class="value" id="equalTotalValue">2 980 ₽</div></div>
+        <div class="row"><div><div class="row-title" data-i18n="participantsCount">Количество участников</div><div class="row-sub" data-i18n="participantsCountSub">Равное деление на всех из списка</div></div><div class="tail" id="equalParticipantsValue">3</div></div>
+        <div class="row selected"><div><div class="row-title" data-i18n="eachPays">Каждый платит</div><div class="row-sub" data-i18n="eachPaysSub">Итоговая сумма на человека</div></div><div class="tail accent" id="equalPerPersonValue">993.33 ₽</div></div>
+        <button class="primary-btn" id="saveEqualSplitBtn" data-i18n="saveCalculation">Сохранить расчет</button>
+      </section>
+
+      <section class="screen" id="splitByPeople">
+        <div class="head-row"><button class="back-btn" data-go="splitSetup">←</button><h2 data-i18n="splitByPeopleTitle">Деление по людям</h2></div>
+        <div class="summary"><div class="label" data-i18n="assignedToParticipants">Назначено участникам</div><div class="value" id="peopleAssignedTotal">2 980 ₽</div><div class="hint" id="peopleRemainingHint">Остаток: 0 ₽</div></div>
+        <div class="assign-list" id="peopleAssignList"></div>
+        <button class="primary-btn" id="savePeopleSplitBtn" data-i18n="saveCalculation">Сохранить расчет</button>
+      </section>
+
+      <section class="screen" id="splitByItems">
+        <div class="head-row"><button class="back-btn" data-go="splitSetup">←</button><h2 data-i18n="splitByItemsTitle">Деление по позициям</h2></div>
+        <div class="pill-row" id="itemParticipantsPills"></div>
+        <div class="two-inputs">
+          <div class="input-wrap" style="padding:0 14px; min-height:50px;"><input id="itemNameInput" class="text-input" data-placeholder="itemNamePlaceholder" placeholder="Название позиции"></div>
+          <div class="input-wrap" style="padding:0 14px; min-height:50px;"><input id="itemPriceInput" class="number-input" type="number" min="0" step="1" data-placeholder="pricePlaceholder" placeholder="₽"></div>
+          <button class="plus-btn" id="addItemBtn">+</button>
+        </div>
+        <div class="summary"><div class="label" data-i18n="assignedByItems">Назначено по позициям</div><div class="value" id="itemsAssignedTotal">0 ₽</div><div class="hint" id="itemsRemainingHint">Остаток: 2 980 ₽</div></div>
+        <div class="items-list" id="itemsList"></div>
+        <button class="primary-btn" id="saveItemsSplitBtn" data-i18n="saveCalculation">Сохранить расчет</button>
+      </section>
+
+      <section class="screen" id="fortuneWheel">
+        <div class="head-row"><button class="back-btn" data-go="splitSetup">←</button><h2 data-i18n="fortuneWheel">Колесо фортуны</h2></div>
+        <div class="subtitle" style="margin-top:0" data-i18n="fortuneScreenSub">Рандомно выбирает, кто оплатит счет</div>
+        <div class="summary">
+          <div class="label" data-i18n="currentResult">Текущий результат</div>
+          <div class="value" id="fortuneWinnerValue">Аня</div>
+          <div class="hint" id="fortuneHint" data-i18n="fortuneHint">В колесо попадают все участники, добавленные на первом экране</div>
+        </div>
+        <div class="wheel-wrap">
+          <div class="wheel-pointer"></div>
+          <div class="wheel" id="fortuneWheelGraphic">
+            <div class="wheel-center">GO</div>
+            <div class="wheel-labels" id="fortuneWheelLabels"></div>
+          </div>
+        </div>
+        <div class="list-box">
+          <div class="list-title" data-i18n="participantsInWheel">Участники в колесе</div>
+          <div class="fortune-pill-row" id="fortuneParticipantsPills"></div>
+        </div>
+        <button class="primary-btn" id="spinWheelBtn" data-i18n="spinWheel">Крутить колесо</button>
+        <button class="primary-btn accent-btn" id="saveFortuneBtn" data-i18n="saveToHistory">Сохранить в историю</button>
+      </section>
+
+      <section class="screen" id="profile">
+        <div class="head-row"><button class="back-btn" data-go="home">←</button><h2 data-i18n="profileTitle">Профиль</h2></div>
+        <div class="profile-box"><div class="avatar">G</div><div><div class="row-title" style="font-size:24px">Guest</div><div class="row-sub" data-i18n="localProfile">Локальный профиль приложения</div></div></div>
+        <div class="row" id="themeRow"><div><div class="row-title" data-i18n="theme">Тема</div><div class="row-sub" data-i18n="themeSub">Переключение между светлой и темной</div></div><div class="tail" id="themeTail">Светлая</div></div>
+        <div class="row" data-go="historyScreen"><div><div class="row-title" data-i18n="history">История</div><div class="row-sub" data-i18n="historySub">Ранее сохраненные разделения счета</div></div><div class="tail">→</div></div>
+        <div class="row" data-go="settingsScreen"><div><div class="row-title" data-i18n="settings">Настройки</div><div class="row-sub" data-i18n="settingsSub">Язык интерфейса и уведомления</div></div><div class="tail">→</div></div>
+      </section>
+
+      <section class="screen" id="historyScreen">
+        <div class="head-row"><button class="back-btn" data-go="profile">←</button><h2 data-i18n="history">История</h2></div>
+        <div class="list-box"><div class="list-title" data-i18n="savedCalculations">Сохраненные расчеты</div><div id="historyList"></div></div>
+      </section>
+
+      <section class="screen" id="settingsScreen">
+        <div class="head-row"><button class="back-btn" data-go="profile">←</button><h2 data-i18n="settings">Настройки</h2></div>
+        <div class="row" style="cursor:default">
+          <div style="flex:1"><div class="row-title" data-i18n="language">Язык</div><div class="row-sub" data-i18n="languageSub">Выберите язык интерфейса</div></div>
+          <select id="languageSelect" class="select-input" style="max-width:140px; background:var(--soft); padding:10px 12px; border-radius:12px; border:1px solid var(--border);">
+            <option value="Русский">Русский</option>
+            <option value="English">English</option>
+            <option value="Deutsch">Deutsch</option>
+          </select>
+        </div>
+        <div class="row" style="cursor:default">
+          <div style="flex:1"><div class="row-title" data-i18n="notifications">Уведомления</div><div class="row-sub" data-i18n="notificationsSub">Напоминания и системные сообщения</div></div>
+          <button class="toggle on" id="notificationsToggle"></button>
+        </div>
+        <div class="summary"><div class="label" data-i18n="currentSettings">Текущие настройки</div><div class="value" id="settingsSummaryValue" style="font-size:28px">Русский · Вкл</div></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script src="./app.js"></script>
+</body>
+</html>
