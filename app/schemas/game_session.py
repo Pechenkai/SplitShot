@@ -1,24 +1,28 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from pydantic import BaseModel, ConfigDict, Field
 
 
-@dataclass(slots=True)
-class GameSessionCreate:
-    company_id: int
-    game_type: str
-    status: str
+class GameSessionCreate(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    game_type: str = Field(..., min_length=1)
 
 
-@dataclass(slots=True)
-class GameSessionUpdate:
-    status: str
+class GameSessionStatusUpdate(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    status: str = Field(..., min_length=1)
 
 
-@dataclass(slots=True)
-class GameSessionRead:
+class GameSessionUpdate(GameSessionStatusUpdate):
+    pass
+
+
+class GameSessionRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     company_id: int
     game_type: str
     status: str
-

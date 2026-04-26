@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any
+
 from sqlalchemy import select
 
 from app.db.models.game_result import GameResult
@@ -9,11 +11,18 @@ from app.repositories.base import BaseRepository
 class GameResultRepository(BaseRepository[GameResult]):
     model = GameResult
 
-    async def create(self, game_session_id: int, participant_id: int, result_value: str) -> GameResult:
+    async def create(
+        self,
+        game_session_id: int,
+        participant_id: int,
+        result_value: str,
+        result_data: dict[str, Any] | None = None,
+    ) -> GameResult:
         game_result = GameResult(
             game_session_id=game_session_id,
             participant_id=participant_id,
             result_value=result_value,
+            result_data=result_data,
         )
         return await self._save(game_result)
 
@@ -29,4 +38,3 @@ class GameResultRepository(BaseRepository[GameResult]):
 
     async def delete(self, result_id: int) -> bool:
         return await self.delete_by_id(result_id)
-

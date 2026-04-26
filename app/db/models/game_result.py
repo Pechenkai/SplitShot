@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from sqlalchemy import CheckConstraint, ForeignKey, Index, Integer, String
+from typing import Any
+
+from sqlalchemy import JSON, CheckConstraint, ForeignKey, Index, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
@@ -26,7 +28,7 @@ class GameResult(Base):
         nullable=False,
     )
     result_value: Mapped[str] = mapped_column(String(255), nullable=False)
+    result_data: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
 
     game_session: Mapped["GameSession"] = relationship(back_populates="results")
     participant: Mapped["Participant"] = relationship(back_populates="game_results")
-
