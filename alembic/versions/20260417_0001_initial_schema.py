@@ -85,7 +85,6 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["game_session_id"], ["game_session.id"], ondelete="CASCADE"),
         sa.ForeignKeyConstraint(["participant_id"], ["participant.id"], ondelete="CASCADE"),
         sa.CheckConstraint("char_length(trim(result_value)) > 0", name="game_result_value_not_blank"),
-        sa.UniqueConstraint("game_session_id", "participant_id", name="uq_game_result_session_participant"),
     )
     op.create_index("ix_game_result_game_session_id", "game_result", ["game_session_id"])
     op.create_index("ix_game_result_participant_id", "game_result", ["participant_id"])

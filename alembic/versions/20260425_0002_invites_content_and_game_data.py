@@ -18,7 +18,7 @@ depends_on = None
 
 def upgrade() -> None:
     op.add_column("company", sa.Column("invite_code", sa.String(length=16), nullable=True))
-    op.execute("UPDATE company SET invite_code = upper(lpad(to_hex(id), 8, '0'))")
+    op.execute("UPDATE company SET invite_code = upper(substr(md5(random()::text || id::text), 1, 8))")
     op.alter_column("company", "invite_code", nullable=False)
     op.create_index("ix_company_invite_code", "company", ["invite_code"], unique=True)
 
