@@ -1,26 +1,28 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from decimal import Decimal
 
-
-@dataclass(slots=True)
-class CheckItemCreate:
-    company_id: int
-    title: str
-    price: Decimal
+from pydantic import BaseModel, ConfigDict, Field
 
 
-@dataclass(slots=True)
-class CheckItemUpdate:
-    title: str | None = None
-    price: Decimal | None = None
+class CheckItemCreate(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    title: str = Field(..., min_length=1)
+    price: Decimal = Field(..., ge=0)
 
 
-@dataclass(slots=True)
-class CheckItemRead:
+class CheckItemUpdate(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    title: str | None = Field(default=None, min_length=1)
+    price: Decimal | None = Field(default=None, ge=0)
+
+
+class CheckItemRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     company_id: int
     title: str
     price: Decimal
-
