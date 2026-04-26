@@ -11,7 +11,7 @@ from app.config import settings
 def create_engine(
     database_url: str | None = None,
     echo: bool = False,
-    poolclass: type[Pool] | None = NullPool,
+    poolclass: type[Pool] | None = None,
 ) -> AsyncEngine:
     """Create an async SQLAlchemy engine."""
 
