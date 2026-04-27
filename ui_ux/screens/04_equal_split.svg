@@ -1,0 +1,29 @@
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+    <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#1B1B1F" flood-opacity="0.06"/>
+  </filter>
+  <linearGradient id="bgFade" x1="0" y1="0" x2="390" y2="844" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#FBFBFD"/>
+    <stop offset="1" stop-color="#F7F7FA"/>
+  </linearGradient>
+</defs>
+
+<rect x="0" y="0" width="390" height="844" rx="0" fill="url(#bgFade)"/>
+<rect x="16" y="24" width="44" height="44" rx="22" fill="#FFFFFF" stroke="#E7E7EF" stroke-width="1" filter="url(#shadow)"/>
+<path d="M 42 37 L 33 46 L 42 55" stroke="#2B2B33" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="74" y="54" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="800" fill="#17171A">Деление поровну</text>
+<rect x="16" y="104" width="358" height="96" rx="24" fill="#FFFFFF" stroke="#E7E7EF" stroke-width="1" filter="url(#shadow)"/>
+<text x="34" y="134" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="400" fill="#6D6E76">Общая сумма</text>
+<text x="34" y="172" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#17171A">2 980 ₽</text>
+<rect x="16" y="228" width="358" height="88" rx="22" fill="#FFFFFF" stroke="#E7E7EF" stroke-width="1" filter="url(#shadow)"/>
+<text x="34" y="262" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#17171A">Количество участников</text>
+<text x="34" y="286" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="400" fill="#6D6E76">Равное деление на всех из списка</text>
+<text x="344" y="274" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="800" fill="#17171A">3</text>
+<rect x="16" y="332" width="358" height="88" rx="22" fill="#FFF8FC" stroke="#FF4FB4" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="34" y="366" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#17171A">Каждый платит</text>
+<text x="34" y="390" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="400" fill="#6D6E76">Итоговая сумма на человека</text>
+<text x="344" y="378" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="800" fill="#17171A">993.33 ₽</text>
+<rect x="16" y="770" width="358" height="58" rx="20" fill="#202028" stroke="#202028" stroke-width="1" filter="url(#shadow)"/>
+<text x="195" y="807" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700" fill="#FFFFFF">Сохранить расчет</text>
+</svg>
