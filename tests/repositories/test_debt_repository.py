@@ -52,25 +52,24 @@ async def test_create_debt_rejects_negative_amount(db_session, seeded_company, s
         await repo.create(seeded_company.id, debtor.id, creditor.id, Decimal("-0.01"))
 
 
-
 async def test_create_debt_with_zero_amount(db_session, seeded_company, seeded_participants) -> None:
     repo = DebtRepository(db_session)
     debtor, creditor, *_ = seeded_participants
-    
+
     debt = await repo.create(seeded_company.id, debtor.id, creditor.id, Decimal("0.00"))
-    
+
     assert debt.amount == Decimal("0.00")
 
 
 async def test_multiple_debts_between_same_users(db_session, seeded_company, seeded_participants) -> None:
     repo = DebtRepository(db_session)
     debtor, creditor, *_ = seeded_participants
-    
+
     debt1 = await repo.create(seeded_company.id, debtor.id, creditor.id, Decimal("10.00"))
     debt2 = await repo.create(seeded_company.id, debtor.id, creditor.id, Decimal("5.00"))
-    
+
     debts = await repo.list_by_debtor(debtor.id)
-    
+
     assert len(debts) == 2
     assert sum(d.amount for d in debts) == Decimal("15.00")
 
@@ -78,7 +77,7 @@ async def test_multiple_debts_between_same_users(db_session, seeded_company, see
 async def test_list_by_debtor_returns_empty_for_no_debts(db_session, seeded_company, seeded_participants) -> None:
     repo = DebtRepository(db_session)
     debtor = seeded_participants[0]
-    
+
     debts = await repo.list_by_debtor(debtor.id)
-    
+
     assert debts == []

@@ -17,4 +17,3 @@ class Base(AsyncAttrs, DeclarativeBase):
     """Declarative base for all ORM models."""
 
     metadata = MetaData(naming_convention=NAMING_CONVENTION)
-

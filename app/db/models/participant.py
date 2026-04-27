@@ -34,4 +34,3 @@ class Participant(Base):
         foreign_keys="Debt.creditor_id",
         passive_deletes=True,
     )
-

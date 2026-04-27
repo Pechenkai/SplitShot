@@ -49,21 +49,21 @@ def test_detailed_split_divides_items_and_tips_proportionally() -> None:
     debts = calculate_detailed_split(
         items=[
             (Decimal("900.00"), [1, 2, 3]),
-            (Decimal("600.00"), [2]), 
+            (Decimal("600.00"), [2]),
         ],
         tips_amount=Decimal("150.00"),
         participant_ids=[1, 2, 3],
         payer_id=1,
     )
-    
-    assert len(debts) == 2  
-    
+
+    assert len(debts) == 2
+
     debt_2 = next(d for d in debts if d.debtor_id == 2)
     debt_3 = next(d for d in debts if d.debtor_id == 3)
-    
+
     assert debt_2.creditor_id == 1
     assert debt_3.creditor_id == 1
-    
+
     assert debt_2.amount in [Decimal("990.00"), Decimal("990.01")]
     assert debt_3.amount in [Decimal("330.00"), Decimal("329.99")]
 
