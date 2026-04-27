@@ -44,4 +44,3 @@ class DebtRepository(BaseRepository[Debt]):
 
     async def delete(self, debt_id: int) -> bool:
         return await self.delete_by_id(debt_id)
-  

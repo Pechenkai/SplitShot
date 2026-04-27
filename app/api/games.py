@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy.exc import IntegrityError
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -21,15 +20,10 @@ async def create_game_session(company_id: int, payload: GameSessionCreate, db: A
 
 
 @router.get("/companies/{company_id}/game-sessions", response_model=list[GameSessionRead])
-async def list_game_sessions(
-    company_id: int,
-    limit: int = Query(default=100, ge=1, le=500),
-    offset: int = Query(default=0, ge=0),
-    db: AsyncSession = Depends(get_db),
-):
+async def list_game_sessions(company_id: int, db: AsyncSession = Depends(get_db)):
     if await CompanyRepository(db).get_by_id(company_id) is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Company not found")
-    return await GameRepository(db).list_sessions_by_company(company_id, limit=limit, offset=offset)
+    return await GameRepository(db).list_sessions_by_company(company_id)
 
 
 @router.get("/game-sessions/{session_id}", response_model=GameSessionRead)
@@ -61,20 +55,12 @@ async def add_game_result(session_id: int, payload: GameResultCreate, db: AsyncS
     if participant.company_id != game_session.company_id:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Participant must belong to session company")
 
-    try:
-        return await game_repo.add_result(session_id, payload.participant_id, payload.result_value, payload.result_data)
-    except IntegrityError as exc:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Participant result already exists") from exc
+    return await game_repo.add_result(session_id, payload.participant_id, payload.result_value, payload.result_data)
 
 
 @router.get("/game-sessions/{session_id}/results", response_model=list[GameResultRead])
-async def list_game_results(
-    session_id: int,
-    limit: int = Query(default=100, ge=1, le=500),
-    offset: int = Query(default=0, ge=0),
-    db: AsyncSession = Depends(get_db),
-):
+async def list_game_results(session_id: int, db: AsyncSession = Depends(get_db)):
     game_repo = GameRepository(db)
     if await game_repo.get_session(session_id) is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Game session not found")
-    return await game_repo.list_results(session_id, limit=limit, offset=offset)
+    return await game_repo.list_results(session_id)

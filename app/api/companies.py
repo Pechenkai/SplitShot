@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy.exc import IntegrityError
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -13,22 +12,12 @@ router = APIRouter(prefix="/companies", tags=["companies"])
 
 @router.post("", response_model=CompanyRead, status_code=status.HTTP_201_CREATED)
 async def create_company(payload: CompanyCreate, db: AsyncSession = Depends(get_db)):
-    try:
-        return await CompanyRepository(db).create(
-            title=payload.title,
-            invite_code=payload.invite_code,
-        )
-    except IntegrityError as exc:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Invite code already exists") from exc
+    return await CompanyRepository(db).create(payload.title)
 
 
 @router.get("", response_model=list[CompanyRead])
-async def list_companies(
-    limit: int = Query(default=100, ge=1, le=500),
-    offset: int = Query(default=0, ge=0),
-    db: AsyncSession = Depends(get_db),
-):
-    return await CompanyRepository(db).list(limit=limit, offset=offset)
+async def list_companies(db: AsyncSession = Depends(get_db)):
+    return await CompanyRepository(db).list()
 
 
 @router.get("/by-code/{invite_code}", response_model=CompanyRead)
@@ -48,7 +37,8 @@ async def get_company(company_id: int, db: AsyncSession = Depends(get_db)):
 
 
 @router.delete("/{company_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_company(company_id: int, db: AsyncSession = Depends(get_db)) -> None:
+async def delete_company(company_id: int, db: AsyncSession = Depends(get_db)):
     deleted = await CompanyRepository(db).delete(company_id)
     if not deleted:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Company not found")
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

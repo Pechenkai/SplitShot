@@ -1,0 +1,65 @@
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+    <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#1B1B1F" flood-opacity="0.06"/>
+  </filter>
+  <linearGradient id="bgFade" x1="0" y1="0" x2="390" y2="844" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#FBFBFD"/>
+    <stop offset="1" stop-color="#F4F5F9"/>
+  </linearGradient>
+</defs>
+
+<rect width="390" height="844" fill="url(#bgFade)"/>
+
+<!-- Header -->
+<rect x="16" y="24" width="142" height="48" rx="24" fill="#FFFFFF" stroke="#E7E7EF" filter="url(#shadow)"/>
+<circle cx="40" cy="48" r="15" fill="#FFE7F4"/>
+<text x="40" y="53" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#FF4FB4">S</text>
+<text x="63" y="54" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#17171A">eat &amp; split</text>
+
+<rect x="330" y="24" width="44" height="44" rx="22" fill="#FFFFFF" stroke="#E7E7EF" filter="url(#shadow)"/>
+<circle cx="352" cy="40" r="6.5" stroke="#2B2B33" stroke-width="2"/>
+<path d="M342 56C344 48 360 48 362 56" stroke="#2B2B33" stroke-width="2" stroke-linecap="round"/>
+
+<!-- Title -->
+<text x="16" y="112" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800" fill="#17171A">Как хотите</text>
+<text x="16" y="145" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800" fill="#17171A">разделить счет?</text>
+<text x="16" y="178" font-family="Inter, Arial, sans-serif" font-size="14" fill="#6D6E76">Сначала выберите режим, затем подтвердите расчет</text>
+
+<!-- Summary card with inline edit -->
+<rect x="16" y="196" width="358" height="140" rx="24" fill="#FFFFFF" stroke="#E7E7EF" filter="url(#shadow)"/>
+<text x="34" y="226" font-family="Inter, Arial, sans-serif" font-size="14" fill="#6D6E76">Итого по счету</text>
+<text x="34" y="270" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#17171A">2 980 ₽</text>
+
+<!-- Inline edit controls -->
+<rect x="34" y="286" width="126" height="34" rx="12" fill="#F2F3F7" stroke="#E7E7EF"/>
+<text x="97" y="308" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#17171A">2980</text>
+<rect x="170" y="286" width="104" height="34" rx="14" fill="#FF4FB4"/>
+<text x="222" y="308" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">Применить</text>
+
+<!-- Split card -->
+<rect x="16" y="352" width="358" height="176" rx="30" fill="#FFF8FC" stroke="#FF4FB4" stroke-width="1.5" filter="url(#shadow)"/>
+<circle cx="45" cy="381" r="21" fill="#F2F3F7"/>
+<circle cx="40" cy="375" r="5.5" stroke="#2B2B33" stroke-width="2"/>
+<circle cx="51" cy="375" r="5.5" stroke="#2B2B33" stroke-width="2"/>
+<path d="M29 390C32 382 44 382 47 390" stroke="#2B2B33" stroke-width="2" stroke-linecap="round"/>
+<path d="M41 390C44 382 56 382 59 390" stroke="#2B2B33" stroke-width="2" stroke-linecap="round"/>
+<rect x="272" y="366" width="82" height="28" rx="14" fill="#FFE7F4"/>
+<text x="313" y="384" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="800" fill="#FF4FB4">main flow</text>
+<text x="40" y="464" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="800" fill="#17171A">Разделить счет</text>
+<text x="40" y="490" font-family="Inter, Arial, sans-serif" font-size="14" fill="#6D6E76">Поровну, по людям или по позициям</text>
+
+<!-- Full payment card -->
+<rect x="16" y="544" width="358" height="176" rx="30" fill="#FFFFFF" stroke="#E7E7EF" filter="url(#shadow)"/>
+<circle cx="45" cy="573" r="21" fill="#F2F3F7"/>
+<circle cx="45" cy="567" r="6.5" stroke="#2B2B33" stroke-width="2"/>
+<path d="M35 583C37 575 53 575 55 583" stroke="#2B2B33" stroke-width="2" stroke-linecap="round"/>
+<rect x="268" y="558" width="86" height="34" rx="17" fill="#202028"/>
+<text x="311" y="580" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">2 980 ₽</text>
+<text x="40" y="656" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="800" fill="#17171A">Оплатить счет</text>
+<text x="40" y="682" font-family="Inter, Arial, sans-serif" font-size="14" fill="#6D6E76">Один участник берет на себя весь счет</text>
+
+<!-- Button -->
+<rect x="16" y="770" width="358" height="58" rx="20" fill="#202028"/>
+<text x="195" y="807" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700" fill="#FFFFFF">Продолжить</text>
+</svg>

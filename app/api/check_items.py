@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -26,7 +26,8 @@ async def list_check_items(company_id: int, db: AsyncSession = Depends(get_db)):
 
 
 @router.delete("/check-items/{check_item_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_check_item(check_item_id: int, db: AsyncSession = Depends(get_db)) -> None:
+async def delete_check_item(check_item_id: int, db: AsyncSession = Depends(get_db)):
     deleted = await CheckItemRepository(db).delete(check_item_id)
     if not deleted:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Check item not found")
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
