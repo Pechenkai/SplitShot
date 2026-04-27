@@ -1,2 +1,1 @@
 """Seed helpers for SplitShot."""
-

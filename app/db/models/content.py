@@ -8,9 +8,7 @@ from app.db.base import Base
 
 class TongueTwister(Base):
     __tablename__ = "tongue_twister"
-    __table_args__ = (
-        CheckConstraint("char_length(trim(text)) > 0", name="tongue_twister_text_not_blank"),
-    )
+    __table_args__ = (CheckConstraint("char_length(trim(text)) > 0", name="tongue_twister_text_not_blank"),)
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     text: Mapped[str] = mapped_column(String(500), nullable=False)

@@ -29,4 +29,3 @@ class ParticipantRepository(BaseRepository[Participant]):
 
     async def delete(self, participant_id: int) -> bool:
         return await self.delete_by_id(participant_id)
-

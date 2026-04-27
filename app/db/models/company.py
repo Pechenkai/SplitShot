@@ -12,9 +12,7 @@ class Company(Base):
     """A group of participants sharing bills and game sessions."""
 
     __tablename__ = "company"
-    __table_args__ = (
-        CheckConstraint("char_length(trim(title)) > 0", name="company_title_not_blank"),
-    )
+    __table_args__ = (CheckConstraint("char_length(trim(title)) > 0", name="company_title_not_blank"),)
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String(255), nullable=False)

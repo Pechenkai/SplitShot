@@ -35,4 +35,3 @@ class Debt(Base):
         back_populates="debts_as_creditor",
         foreign_keys=[creditor_id],
     )
-

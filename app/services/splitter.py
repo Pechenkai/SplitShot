@@ -39,9 +39,7 @@ def calculate_quick_split(
     share = _to_money(total / Decimal(len(ids)))
 
     return [
-        CalculatedDebt(debtor_id=participant_id, creditor_id=payer_id, amount=share)
-        for participant_id in ids
-        if participant_id != payer_id
+        CalculatedDebt(debtor_id=participant_id, creditor_id=payer_id, amount=share) for participant_id in ids if participant_id != payer_id
     ]
 
 

@@ -73,29 +73,29 @@ async def test_delete_company_cascades_to_all_children(db_session, money) -> Non
 
 async def test_multiple_companies_list(db_session) -> None:
     repo = CompanyRepository(db_session)
-    
+
     company1 = await repo.create("First")
     company2 = await repo.create("Second")
     company3 = await repo.create("Third")
-    
+
     companies = await repo.list_all()
-    
+
     assert [c.id for c in companies] == [company1.id, company2.id, company3.id]
 
 
 async def test_company_title_can_be_duplicated(db_session) -> None:
     repo = CompanyRepository(db_session)
-    
+
     company1 = await repo.create("Same Bar")
     company2 = await repo.create("Same Bar")
-    
+
     assert company1.id != company2.id
     assert company1.title == company2.title == "Same Bar"
 
 
 async def test_get_by_id_returns_none_for_invalid_id(db_session) -> None:
     repo = CompanyRepository(db_session)
-    
+
     result = await repo.get_by_id(-1)
-    
+
     assert result is None

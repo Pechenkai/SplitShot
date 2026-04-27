@@ -29,4 +29,3 @@ class GameSessionRepository(BaseRepository[GameSession]):
 
     async def delete(self, session_id: int) -> bool:
         return await self.delete_by_id(session_id)
-

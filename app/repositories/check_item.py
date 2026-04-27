@@ -40,4 +40,3 @@ class CheckItemRepository(BaseRepository[CheckItem]):
 
     async def delete(self, item_id: int) -> bool:
         return await self.delete_by_id(item_id)
-
